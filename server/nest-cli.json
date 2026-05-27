@@ -1,0 +1,32 @@
+{
+    "$schema": "https://json.schemastore.org/nest-cli",
+    "collection": "@nestjs/schematics",
+    "sourceRoot": "apps/onestop-api/src",
+    "compilerOptions": {
+        "deleteOutDir": true,
+        "webpack": true,
+        "tsConfigPath": "apps/onestop-api/tsconfig.app.json"
+    },
+    "monorepo": true,
+    "root": "apps/onestop-api",
+    "projects": {
+        "onestop-api": {
+            "type": "application",
+            "root": "apps/onestop-api",
+            "entryFile": "main",
+            "sourceRoot": "apps/onestop-api/src",
+            "compilerOptions": {
+                "tsConfigPath": "apps/onestop-api/tsconfig.app.json"
+            }
+        },
+        "onestop-batch": {
+            "type": "application",
+            "root": "apps/onestop-batch",
+            "entryFile": "main",
+            "sourceRoot": "apps/onestop-batch/src",
+            "compilerOptions": {
+                "tsConfigPath": "apps/onestop-batch/tsconfig.app.json"
+            }
+        }
+    }
+}
