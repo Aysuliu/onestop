@@ -62,6 +62,7 @@ const AdminProperties: NextPage = ({ initialInquiry, ...props }: any) => {
 	const changeRowsPerPageHandler = async (event: React.ChangeEvent<HTMLInputElement>) => {
 		propertiesInquiry.limit = parseInt(event.target.value, 10);
 		propertiesInquiry.page = 1;
+		await getAllPropertiesByAdminRefetch({input: propertiesInquiry});
 		setPropertiesInquiry({ ...propertiesInquiry });
 	};
 
@@ -100,7 +101,13 @@ const AdminProperties: NextPage = ({ initialInquiry, ...props }: any) => {
 	const removePropertyHandler = async (id: string) => {
 		try {
 			if (await sweetConfirmAlert('Are you sure to remove?')) {
+				await removePropertyByAdmin({
+					variables: {
+						input: id,
+					}
+				})
 			}
+			await getAllPropertiesByAdminRefetch({input: propertiesInquiry});
 			menuIconCloseHandler();
 		} catch (err: any) {
 			sweetErrorHandling(err).then();
@@ -133,7 +140,13 @@ const AdminProperties: NextPage = ({ initialInquiry, ...props }: any) => {
 	const updatePropertyHandler = async (updateData: PropertyUpdate) => {
 		try {
 			console.log('+updateData: ', updateData);
+			await updatePropertyByAdmin({
+					variables: {
+						input: updateData,
+					}
+				})
 			menuIconCloseHandler();
+			await getAllPropertiesByAdminRefetch({input: propertiesInquiry});
 		} catch (err: any) {
 			menuIconCloseHandler();
 			sweetErrorHandling(err).then();
@@ -150,28 +163,28 @@ const AdminProperties: NextPage = ({ initialInquiry, ...props }: any) => {
 					<TabContext value={value}>
 						<Box component={'div'}>
 							<List className={'tab-menu'}>
-								<ListItem
+								<ListItem //@ts-ignore
 									onClick={(e) => tabChangeHandler(e, 'ALL')}
 									value="ALL"
 									className={value === 'ALL' ? 'li on' : 'li'}
 								>
 									All
 								</ListItem>
-								<ListItem
+								<ListItem //@ts-ignore
 									onClick={(e) => tabChangeHandler(e, 'ACTIVE')}
 									value="ACTIVE"
 									className={value === 'ACTIVE' ? 'li on' : 'li'}
 								>
 									Active
 								</ListItem>
-								<ListItem
+								<ListItem //@ts-ignore
 									onClick={(e) => tabChangeHandler(e, 'SOLD')}
 									value="SOLD"
 									className={value === 'SOLD' ? 'li on' : 'li'}
 								>
 									Sold
 								</ListItem>
-								<ListItem
+								<ListItem //@ts-ignore
 									onClick={(e) => tabChangeHandler(e, 'DELETE')}
 									value="DELETE"
 									className={value === 'DELETE' ? 'li on' : 'li'}
