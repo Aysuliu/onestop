@@ -7,6 +7,7 @@ import { onError } from '@apollo/client/link/error';
 import { getJwtToken } from '../libs/auth';
 import { TokenRefreshLink } from 'apollo-link-token-refresh';
 import { sweetErrorAlert } from '../libs/sweetAlert';
+import { socketVar } from './store';
 
 let apolloClient: ApolloClient<NormalizedCacheObject>;
 
@@ -34,7 +35,9 @@ class LoggingWebSocket {
 	private socket: WebSocket;
 
 	constructor(url: string) {
-		this.socket = new WebSocket(url);
+		this.socket = new WebSocket(`${url}?token=${getJwtToken()}`);
+		socketVar(this.socket);
+
 		this.socket.onopen = () => {
 			console.log("WebSocket Connection");
 		}
@@ -47,6 +50,7 @@ class LoggingWebSocket {
 	}
 
 	send(data: string | ArrayBuffer | SharedArrayBuffer | Blob | ArrayBufferView) {
+		//@ts-ignore
 		this.socket.send(data);
 	}
 
